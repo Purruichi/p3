@@ -80,6 +80,7 @@ async function obtenerCarta(num_cards, reciever) {
                     pnlResultado.style.display = "flex";
                     playerWins++;
                     lblPlayerWins.textContent = "Jugador: " + playerWins;
+                    checkWins();
                     btnNuevaRonda.style.display = "block";
                     round_finished = true;
                     return;
@@ -95,6 +96,7 @@ async function obtenerCarta(num_cards, reciever) {
                             pnlResultado.style.display = "flex";
                             dealerWins++;
                             lblDealerWins.textContent = "Dealer: " + dealerWins;
+                            checkWins();
                             btnNuevaRonda.style.display = "block";
                             round_finished = true;
                             return;
@@ -104,6 +106,7 @@ async function obtenerCarta(num_cards, reciever) {
                         pnlResultado.style.display = "flex";
                         dealerWins++;
                         lblDealerWins.textContent = "Dealer: " + dealerWins;
+                        checkWins();
                         btnNuevaRonda.style.display = "block";
                         round_finished = true;
                         return;
@@ -137,6 +140,7 @@ async function obtenerCarta(num_cards, reciever) {
                     pnlResultado.style.display = "flex";
                     dealerWins++;
                     lblDealerWins.textContent = "Dealer: " + dealerWins;
+                    checkWins();
                     btnNuevaRonda.style.display = "block";
                     round_finished = true;
                     return;
@@ -152,6 +156,7 @@ async function obtenerCarta(num_cards, reciever) {
                             pnlResultado.style.display = "flex";
                             playerWins++;
                             lblPlayerWins.textContent = "Jugador: " + playerWins;
+                            checkWins();
                             btnNuevaRonda.style.display = "block";
                             round_finished = true;
                             return;
@@ -161,6 +166,7 @@ async function obtenerCarta(num_cards, reciever) {
                         pnlResultado.style.display = "flex";
                         playerWins++;
                         lblPlayerWins.textContent = "Jugador: " + playerWins;
+                        checkWins();
                         btnNuevaRonda.style.display = "block";
                         round_finished = true;
                         return;
@@ -194,11 +200,13 @@ btnPlantarse.addEventListener("click", async function() {
                 pnlResultado.style.display = "flex";
                 playerWins++;
                 lblPlayerWins.textContent = "Jugador: " + playerWins;
+                checkWins();
             } else if (playerScore < dealerScore) {
                 lblResultado.textContent = await generarInsulto();
                 pnlResultado.style.display = "flex";
                 dealerWins++;
                 lblDealerWins.textContent = "Dealer: " + dealerWins;
+                checkWins();
             } else {
                 lblResultado.textContent = "Empate";
                 pnlResultado.style.display = "flex";
@@ -206,16 +214,6 @@ btnPlantarse.addEventListener("click", async function() {
 
             btnNuevaRonda.style.display = "block";
             round_finished = true;
-        }
-
-        if (dealerWins == 10) {
-            lblResultadoPartida.textContent = "Ganó el Dealer";
-            pnlResultadoPartida.style.display = "flex";
-            game_finished = true;
-        } else if (playerWins == 10) {
-            lblResultadoPartida.textContent = "Ganó el Jugador";
-            pnlResultadoPartida.style.display = "flex";
-            game_finished = true;
         }
     }
 });
@@ -305,5 +303,17 @@ async function generarInsulto() {
     } catch (error) {
         console.error("Error al obtener insulto", error);
         return "Perdiste";
+    }
+}
+
+function checkWins() {
+    if (dealerWins == 10) {
+        lblResultadoPartida.textContent = "Ganó el Dealer";
+        pnlResultadoPartida.style.display = "flex";
+        game_finished = true;
+    } else if (playerWins == 10) {
+        lblResultadoPartida.textContent = "Ganó el Jugador";
+        pnlResultadoPartida.style.display = "flex";
+        game_finished = true;
     }
 }
