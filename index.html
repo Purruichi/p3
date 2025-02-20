@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>BlackJack</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <header>
+        <h1>BlackJack</h1>
+    </header>
+    <main>
+        <div id="pnlReglas">
+            <p>El objetivo del juego es sumar 21 puntos o acercarse lo más posible a ese número sin pasarse.</p>
+            <p>El valor de las cartas es el siguiente:</p>
+            <ul>
+                <li>Del 2 al 10: su valor es el mismo que el número de la carta.</li>
+                <li>Las figuras (J, Q, K): valen 10 puntos.</li>
+                <li>El As: puede valer 1 u 11 puntos, dependiendo de cuál sea más conveniente.</li>
+            </ul>
+            <p>El juego se desarrolla de la siguiente manera:</p>
+            <ol>
+                <li>El jugador recibe dos cartas y el dealer recibe una carta boca arriba y otra boca abajo.</li>
+                <li>El jugador puede pedir más cartas (Pedir) o quedarse con las que tiene (Plantarse).
+                    <ol>
+                        <li>Si el jugador pide una carta y se pasa de 21 puntos, pierde la partida.</li>
+                        <li>Si el jugador pide una carta y suma 21 puntos, gana la partida.</li>
+                        <li>Si el jugador se planta, el dealer revela su carta boca abajo y pide cartas hasta sumar 17 puntos o más.
+                            <ol>
+                                <li>Si el dealer se pasa de 21 puntos, el jugador gana la partida.</li>
+                                <li>Si el dealer suma justo 21 puntos, el dealer gana la partida.</li>
+                                <li>Si el dealer no se pasa de 21 puntos, gana el que tenga más puntos.</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+            <p>Gana la partida el primero en ganar 10 manos. ¡Buena suerte!</p>
+        </div>
+        <div id="botonesInicio">
+            <button id="btnIniciar">Iniciar</button>
+        </div>
+        <div id="botonesInGame">
+            <button id="btnPausa">Pausa</button>
+            <button id="btnReiniciar">Reiniciar</button>
+            <button id="btnDetener">Detener</button>
+        </div>
+        <hr>
+        <div id="pnlJuego">
+            <div id="baraja">
+                <img src="resources/Baraja.png" alt="" id="imgBaraja" class="cartas">
+            </div>
+            <div id="manoDealer" class="mano"></div>
+            <div id="manoJugador" class="mano"></div>
+            <div id="btnsJuego">
+                <button id="btnPedir" class="btnJuego">Pedir</button>
+                <button id="btnPlantarse" class="btnJuego">Plantarse</button>
+                <button id="btnNuevaRonda" class="btnJuego">Nueva Ronda</button>
+            </div>
+            <div id="pnlPuntosDealer" class="pnlPuntos">
+                <p id="lblPuntosDealer">Dealer: 0</p>
+            </div>
+            <div id="pnlPuntosJugador" class="pnlPuntos">
+                <p id="lblPuntosJugador">Jugador: 0</p>
+            </div>
+        </div>
+        <div id="pnlResultado">
+            <h2 id="lblResultado">Resultado</h2>
+        </div>
+        <div id="pnlResultadoPartida">
+            <h2 id="lblResultadoPartida">Resultado</h2>
+            <button id="btnVolverAJugar">Volver a Jugar</button>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Mean BlackJack</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

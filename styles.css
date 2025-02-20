@@ -1,0 +1,244 @@
+header {
+    background-color: #f8f9fa;
+    padding: 0px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 2px solid #e9ecef;
+}
+
+main {
+    padding: 20px;
+    margin-bottom: 100px;
+}
+
+footer {
+    background-color: #f8f9fa;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    border-top: 2px solid #e9ecef;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+#pnlReglas {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333333;
+}
+
+#pnlReglas p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #555555;
+}
+
+#pnlReglas ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 10px;
+}
+
+#pnlReglas ul li {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555555;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #e9ecef;
+    margin: 20px 0;
+}
+
+#pnlJuego {
+    display: none;
+}
+
+button {
+    border: none;
+}
+
+#botonesInGame {
+    display: none;
+    justify-content: center;
+}
+
+#botonesInGame button {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px;
+}
+
+#botonesInicio button {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px;
+}
+
+#btnIniciar {
+    display: inline-block;
+    background-color: green;
+    color: white;
+}
+
+#btnPausa {
+    display: inline-block;
+    background-color: yellow;
+    color: black;
+}
+
+#btnReiniciar {
+    display: inline-block;
+    background-color: blue;
+    color: white;
+}
+
+#btnDetener {
+    display: inline-block;
+    background-color: red;
+    color: white;
+}
+
+#botonesInicio, #botonesInGame {
+    text-align: center;
+}
+
+div#pnlJuego {
+    background-image: url("resources/MesaBlackJack.jpg");
+    background-color: #65fc00;
+    height: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 0.5fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+    "baraja manoDealer puntuacionDealer" 
+    "botonesJuego manoJugador puntuacionJugador";
+    display : none;
+}
+
+#baraja {
+    grid-area: baraja;
+    display: flex;
+    margin: 20px;
+    justify-content: center;
+    align-items: start;
+}
+
+.cartas {
+    position: relative;
+    width: 100px;
+    height: 150px;
+}
+
+#imgBaraja {
+    width: 120px;
+    height: 170px;
+}
+
+.mano {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5px;
+}
+
+#manoDealer {
+    margin-top: 20px;
+    grid-area: manoDealer;
+}
+
+#manoJugador {
+    margin-bottom: 20px;
+    grid-area: manoJugador;
+    align-items: end;
+}
+
+#btnsJuego {
+    grid-area: botonesJuego;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.btnJuego {
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+#btnPedir {
+    background-color: green;
+    color: white;
+}
+
+#btnPlantarse {
+    background-color: red;
+    color: white;
+}
+
+#btnNuevaRonda {
+    display: none;
+    background-color: orange;
+    color: white;
+}
+
+.pnlPuntos {
+    display: flex;
+    justify-content: left;
+    align-items: start;
+    margin-top: 60px;
+}
+
+.pnlPuntos p {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#pnlPuntuacionDealer {
+    grid-area: puntuacionDealer;
+}
+
+#pnlPuntuacionJugador {
+    grid-area: puntuacionJugador;
+}
+
+#pnlResultado {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#btnVolverAJugar {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: green;
+    color: white;
+}
+
+#pnlResultadoPartida {
+    display : none;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
