@@ -6,6 +6,9 @@ const btnPedir = document.getElementById("btnPedir");
 const btnPlantarse = document.getElementById("btnPlantarse");
 const btnReiniciar = document.getElementById("btnReiniciar");
 const btnIniciar = document.getElementById("btnIniciar");
+const btnDetener = document.getElementById("btnDetener");
+const btnPausa = document.getElementById("btnPausa");
+const btnIconoPausa = document.getElementById("btnIconoPausa");
 const btnNuevaRonda = document.getElementById("btnNuevaRonda");
 const lblResultado = document.getElementById("lblResultado");
 const pnlResultado = document.getElementById("pnlResultado");
@@ -13,6 +16,7 @@ const lblResultadoPartida = document.getElementById("lblResultadoPartida");
 const pnlResultadoPartida = document.getElementById("pnlResultadoPartida");
 const btnVolverAJugar = document.getElementById("btnVolverAJugar");
 const pnlJuego = document.getElementById("pnlJuego");
+const pnlPausa = document.getElementById("pnlPausa");
 
 let deck_id = '';
 let playerCards = [];
@@ -21,10 +25,10 @@ let playerScore = 0;
 let dealerScore = 0;
 let playerAces = 0;
 let dealerAces = 0;
-let playerAceValue = 11;
-let dealerAceValue = 11;
 
-let round_finished = false;
+let round_finished = true;
+let game_finished = false;
+let game_paused = false;
 
 let playerWins = 0;
 let dealerWins = 0;
@@ -33,22 +37,20 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Page has been loaded and DOM is ready');
 });
 
-btnIniciar.addEventListener("click", function() {
-    fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
-    .then(response => response.json())
-    .then(data => {
+btnIniciar.addEventListener("click", async function() {
+    try {
+        const response = await fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6');
+        const data = await response.json();
         deck_id = data.deck_id;
-        console.log(deck_id);
-        console.log(data.deck_id);
-    }).then(() => {
-        console.log(deck_id);
         document.getElementById("botonesInicio").style.display = "none";
         document.getElementById("botonesInGame").style.display = "flex";
         btnNuevaRonda.style.display = "block";
         round_finished = true;
-    })
-    .catch(error => console.error("Error al obtener la baraja", error));
+    } catch (error) {
+        console.error("Error al obtener la baraja", error);
+    }
     pnlJuego.style.display = "grid";
+    newGame();
 });
 
 async function obtenerCarta(num_cards, reciever) {
@@ -66,7 +68,7 @@ async function obtenerCarta(num_cards, reciever) {
                 if (data.cards[i].value == "KING" || data.cards[i].value == "QUEEN" || data.cards[i].value == "JACK") {
                     playerScore += 10;
                 } else if (data.cards[i].value == "ACE") {
-                    playerScore += playerAceValue;
+                    playerScore += 11;
                     playerAces++;
                 } else {
                     playerScore += parseInt(data.cards[i].value);
@@ -83,9 +85,20 @@ async function obtenerCarta(num_cards, reciever) {
                     return;
                 }
                 if (playerScore > 21) {
-                    if (playerAces > 0 && playerAceValue == 11) {
-                        playerScore -= 10 * playerAces;
-                        playerAceValue = 1;
+                    if (playerAces > 0) {
+                        while (playerScore > 21 && playerAces > 0) {
+                            playerScore -= 10;
+                            playerAces--;
+                        }
+                        if (playerScore > 21) {
+                            lblResultado.textContent = await generarInsulto();
+                            pnlResultado.style.display = "flex";
+                            dealerWins++;
+                            lblDealerWins.textContent = "Dealer: " + dealerWins;
+                            btnNuevaRonda.style.display = "block";
+                            round_finished = true;
+                            return;
+                        }
                     } else {
                         lblResultado.textContent = await generarInsulto();
                         pnlResultado.style.display = "flex";
@@ -112,7 +125,7 @@ async function obtenerCarta(num_cards, reciever) {
                 if (data.cards[i].value == "KING" || data.cards[i].value == "QUEEN" || data.cards[i].value == "JACK") {
                     dealerScore += 10;
                 } else if (data.cards[i].value == "ACE") {
-                    dealerScore += dealerAceValue;
+                    dealerScore += 11;
                     dealerAces++;
                 } else {
                     dealerScore += parseInt(data.cards[i].value);
@@ -129,9 +142,20 @@ async function obtenerCarta(num_cards, reciever) {
                     return;
                 }
                 if (dealerScore > 21) {
-                    if (dealerAces > 0 && dealerAceValue == 11) {
-                        dealerScore -= 10 * dealerAces;
-                        dealerAceValue = 1;
+                    if (dealerAces > 0) {
+                        while (dealerScore > 21 && dealerAces > 0) {
+                            dealerScore -= 10;
+                            dealerAces--;
+                        }
+                        if (dealerScore > 21) {
+                            lblResultado.textContent = "Ganaste";
+                            pnlResultado.style.display = "flex";
+                            playerWins++;
+                            lblPlayerWins.textContent = "Jugador: " + playerWins;
+                            btnNuevaRonda.style.display = "block";
+                            round_finished = true;
+                            return;
+                        }
                     } else {
                         lblResultado.textContent = "Ganaste";
                         pnlResultado.style.display = "flex";
@@ -187,15 +211,19 @@ btnPlantarse.addEventListener("click", async function() {
         if (dealerWins == 10) {
             lblResultadoPartida.textContent = "Ganó el Dealer";
             pnlResultadoPartida.style.display = "flex";
+            game_finished = true;
         } else if (playerWins == 10) {
             lblResultadoPartida.textContent = "Ganó el Jugador";
             pnlResultadoPartida.style.display = "flex";
+            game_finished = true;
         }
     }
 });
 
 btnNuevaRonda.addEventListener("click", function() {
-    newRound();
+    if (!game_finished) {
+        newRound();
+    }
 });
 
 async function newRound() {
@@ -203,7 +231,6 @@ async function newRound() {
     .then(response => response.json())
     .then(data => {
         deck_id = data.deck_id;
-        console.log(deck_id);
     }).then(() => {
         playerCards = [];
         dealerCards = [];
@@ -228,22 +255,46 @@ async function newRound() {
     await obtenerCarta(1, "dealer");
 }
 
-btnVolverAJugar.addEventListener("click", function() {
+async function newGame() {
     playerWins = 0;
     dealerWins = 0;
     lblPlayerWins.textContent = "Jugador: " + playerWins;
     lblDealerWins.textContent = "Dealer: " + dealerWins;
     pnlResultadoPartida.style.display = "none";
+    game_finished = false;
     newRound();
+}
+
+btnVolverAJugar.addEventListener("click", function() {
+    newGame();
 });
 
 btnReiniciar.addEventListener("click", function() {
-    playerWins = 0;
-    dealerWins = 0;
-    lblPlayerWins.textContent = "Jugador: " + playerWins;
-    lblDealerWins.textContent = "Dealer: " + dealerWins;
-    pnlResultadoPartida.style.display = "none";
-    newRound();
+    newGame();
+});
+
+btnPausa.addEventListener("click", function() {
+    if (!game_paused) {
+        pnlPausa.style.display = "flex";
+        game_paused = true;
+        btnPausa.textContent = "Continuar";
+    } else {
+        pnlPausa.style.display = "none";
+        game_paused = false;
+        btnPausa.textContent = "Pausa";
+    }
+});
+
+btnIconoPausa.addEventListener("click", function() {
+    pnlPausa.style.display = "none";
+    game_paused = false;
+    btnPausa.textContent = "Pausa";
+});
+
+btnDetener.addEventListener("click", function() {
+    document.getElementById("botonesInicio").style.display = "flex";
+    document.getElementById("botonesInGame").style.display = "none";
+    pnlJuego.style.display = "none";
 });
 
 async function generarInsulto() {
